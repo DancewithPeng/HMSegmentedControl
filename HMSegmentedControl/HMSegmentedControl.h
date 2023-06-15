@@ -250,6 +250,9 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlImagePosition) {
 
 @property (nonatomic, readwrite) UIEdgeInsets enlargeEdgeInset;
 
+/// 内容边界距离
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInset;
+
 /**
  Default is YES. Set to NO to disable animation during user selection.
  */

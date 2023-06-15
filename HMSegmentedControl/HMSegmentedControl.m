@@ -778,7 +778,12 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
 }
 
 - (void)updateSegmentsRects {
-    self.scrollView.contentInset = UIEdgeInsetsZero;
+    if (UIEdgeInsetsEqualToEdgeInsets(self.scrollView.contentInset, self.contentEdgeInset) == NO) {
+        self.scrollView.contentInset = self.contentEdgeInset;
+    }
+    
+//    self.scrollView.contentInset = UIEdgeInsetsZero;
+
     self.scrollView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
     
     if ([self sectionCount] > 0) {
@@ -942,15 +947,18 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
 }
 
 - (void)scrollTo:(NSUInteger)index animated:(BOOL)animated {
+    
     CGRect rectForSelectedIndex = CGRectZero;
     CGFloat selectedSegmentOffset = 0;
+    CGFloat maxContentWidth = CGRectGetWidth(self.frame) - (self.scrollView.contentInset.left + self.contentEdgeInset.right);
+    
     if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed) {
         rectForSelectedIndex = CGRectMake(self.segmentWidth * index,
                                           0,
                                           self.segmentWidth,
                                           self.frame.size.height);
         
-        selectedSegmentOffset = (CGRectGetWidth(self.frame) / 2) - (self.segmentWidth / 2);
+        selectedSegmentOffset = (maxContentWidth / 2) - (self.segmentWidth / 2);
     } else {
         NSUInteger i = 0;
         CGFloat offsetter = 0;
@@ -966,13 +974,20 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
                                           [[self.segmentWidthsArray objectAtIndex:index] floatValue],
                                           self.frame.size.height);
         
-        selectedSegmentOffset = (CGRectGetWidth(self.frame) / 2) - ([[self.segmentWidthsArray objectAtIndex:index] floatValue] / 2);
+        selectedSegmentOffset = (maxContentWidth / 2) - ([[self.segmentWidthsArray objectAtIndex:index] floatValue] / 2);
     }
-    
     
     CGRect rectToScrollTo = rectForSelectedIndex;
     rectToScrollTo.origin.x -= selectedSegmentOffset;
     rectToScrollTo.size.width += selectedSegmentOffset * 2;
+
+    // 添加对contentInset属性的支持
+    if (rectToScrollTo.origin.x < 0) {
+        rectToScrollTo.origin.x = 0;
+    } else if (CGRectGetMaxX(rectToScrollTo) > self.scrollView.contentSize.width) {
+        rectToScrollTo.origin.x -= (CGRectGetMaxX(rectToScrollTo) - self.scrollView.contentSize.width);
+    }
+    
     [self.scrollView scrollRectToVisible:rectToScrollTo animated:animated];
 }
 
