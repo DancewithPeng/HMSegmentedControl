@@ -778,12 +778,7 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
 }
 
 - (void)updateSegmentsRects {
-    if (UIEdgeInsetsEqualToEdgeInsets(self.scrollView.contentInset, self.contentEdgeInset) == NO) {
-        self.scrollView.contentInset = self.contentEdgeInset;
-    }
-    
-//    self.scrollView.contentInset = UIEdgeInsetsZero;
-
+    self.scrollView.contentInset = self.contentEdgeInset;
     self.scrollView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
     
     if ([self sectionCount] > 0) {
