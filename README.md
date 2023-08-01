@@ -71,7 +71,7 @@ Included is a demo project showing how to fully customize HMSegmentedControl.
 If you are using HMSegmentedControl in your app or know of an app that uses it, please add it to [this list](https://github.com/HeshamMegid/HMSegmentedControl/wiki/Apps-using-HMSegmentedControl).
 
 # Need Help?
-  
+
 If you need help with HMSegmentedControl, or with iOS/Swift development in general, check out [swiftmentor.io](https://swiftmentor.io)
 
 # License
